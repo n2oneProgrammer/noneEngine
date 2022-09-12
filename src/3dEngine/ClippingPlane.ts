@@ -1,5 +1,5 @@
-import Vector3 from "./Vector3";
 import Triangle from "./Triangle.js";
+import Vector3 from "../math/Vector3.js";
 
 export default class ClippingPlane {
     normal: Vector3;

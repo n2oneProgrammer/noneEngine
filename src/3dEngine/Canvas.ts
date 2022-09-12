@@ -1,5 +1,5 @@
-import Color from "./Color.js";
 import {RenderedTriangle} from "./Triangle.js";
+import Color from "../math/Color.js";
 
 export default class Canvas {
     private readonly _canvasDOM: HTMLCanvasElement;
@@ -21,14 +21,6 @@ export default class Canvas {
         this._canvasCtx.clearRect(0, 0, this.width, this.height);
     }
 
-    // getters and setters
-    get canvasDOM(): HTMLCanvasElement {
-        return this._canvasDOM;
-    }
-
-    get canvasCtx(): CanvasRenderingContext2D {
-        return this._canvasCtx;
-    }
 
     putPixel(x: number, y: number, color: Color) {
         let realX = this.width / 2 + x;
@@ -73,5 +65,14 @@ export default class Canvas {
             this._canvasCtx.fill();
         });
 
+    }
+
+    // getters and setters
+    get canvasDOM(): HTMLCanvasElement {
+        return this._canvasDOM;
+    }
+
+    get canvasCtx(): CanvasRenderingContext2D {
+        return this._canvasCtx;
     }
 }

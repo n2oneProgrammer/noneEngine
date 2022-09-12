@@ -1,11 +1,11 @@
 import Component, {IStartParams, IUpdateParams} from "../Component.js";
 import Scene from "../Scene.js";
-import Vector3 from "../Vector3.js";
 import MeshRenderComponent from "./MeshRenderComponent.js";
 import Canvas from "../Canvas.js";
 import ClippingPlane from "../ClippingPlane.js";
 import Triangle, {RenderedTriangle} from "../Triangle.js";
-import {deg2rad} from "../Utils.js";
+import {deg2rad} from "../../math/Utils.js";
+import Vector3 from "../../math/Vector3.js";
 
 interface ICameraParams {
     viewportNear: number;
@@ -16,16 +16,16 @@ interface ICameraParams {
 export default class CameraComponent extends Component {
     private _viewportWidth: number = 0;
     private _viewportHeight: number = 0;
-    private _viewportNear: number;
-    private clippingPlanes: [
+    private readonly _viewportNear: number;
+    private readonly clippingPlanes: [
         ClippingPlane,
         ClippingPlane,
         ClippingPlane,
         ClippingPlane,
         ClippingPlane
     ];
-    private viewportRatio: number;
-    private viewportFov: number;
+    private readonly viewportRatio: number;
+    private readonly viewportFov: number;
 
     constructor({viewportNear, viewportFov, viewportRatio}: ICameraParams) {
         super();
@@ -108,32 +108,6 @@ export default class CameraComponent extends Component {
         return [x * canvas.width / this._viewportWidth, y * canvas.height / this._viewportHeight];
     }
 
-
-    //TODO: REMOVE LATER
-    // private traceRay(models: Model[], startPoint: Vector3, viewport: Vector3, t_min: number, t_max: number) {
-    //     let closest_t = Infinity;
-    //     let closest_model = null;
-    //     for (let model of models) {
-    //         let component = model.getComponent<MeshRenderComponent>(MeshRenderComponent.name);
-    //         if (component != undefined) {
-    //             // console.log(component)
-    //             let [t1, t2] = component.intersectRay(startPoint, viewport);
-    //             if (t1 > t_min && t1 < t_max && t1 < closest_t) {
-    //                 closest_t = t1;
-    //                 closest_model = component;
-    //             }
-    //             if (t2 > t_min && t2 < t_max && t2 < closest_t) {
-    //                 closest_t = t2;
-    //                 closest_model = component;
-    //             }
-    //         }
-    //     }
-    //     if (closest_model == null) {
-    //         return Color.BLACK;
-    //     }
-    //     return closest_model.color;
-    // }
-
     // getters and setters
 
 
@@ -152,5 +126,4 @@ export default class CameraComponent extends Component {
     set viewportHeight(value: number) {
         this._viewportHeight = value;
     }
-
 }

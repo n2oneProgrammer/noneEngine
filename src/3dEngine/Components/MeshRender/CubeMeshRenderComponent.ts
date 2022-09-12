@@ -1,5 +1,5 @@
 import MeshRenderComponent, {IMeshRenderComponent} from "../MeshRenderComponent.js";
-import Vector3 from "../../Vector3.js";
+import Vector3 from "../../../math/Vector3.js";
 
 export interface ICubeMeshRenderComponent {
     size: Vector3
