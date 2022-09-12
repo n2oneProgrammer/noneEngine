@@ -1,9 +1,9 @@
-import Scene from "./general/Scene.js";
-import Model from "./general/Model.js";
-import Vector3 from "./general/Vector3.js";
-import CameraComponent from "./general/Components/CameraComponent.js";
-import Color from "./general/Color.js";
-import CubeMeshRenderComponent from "./general/Components/MeshRender/CubeMeshRenderComponent.js";
+import Scene from "./3dEngine/Scene.js";
+import Model from "./3dEngine/Model.js";
+import Vector3 from "./3dEngine/Vector3.js";
+import CameraComponent from "./3dEngine/Components/CameraComponent.js";
+import Color from "./3dEngine/Color.js";
+import CubeMeshRenderComponent from "./3dEngine/Components/MeshRender/CubeMeshRenderComponent.js";
 import RotateAroundComponent from "./rotateAroundComponent.js";
 
 let canvas = <HTMLCanvasElement>document.getElementById("canvas");

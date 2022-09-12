@@ -1,6 +1,6 @@
-import Component, {IStartParams, IUpdateParams} from "./general/Component.js";
-import Quaternion from "./general/Quaternion.js";
-import Vector3 from "./general/Vector3.js";
+import Component, {IStartParams, IUpdateParams} from "./3dEngine/Component.js";
+import Quaternion from "./3dEngine/Quaternion.js";
+import Vector3 from "./3dEngine/Vector3.js";
 
 export default class RotateAroundComponent extends Component {
     private speed: number;
