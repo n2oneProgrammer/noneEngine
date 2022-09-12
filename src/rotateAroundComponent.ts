@@ -1,9 +1,9 @@
 import Component, {IStartParams, IUpdateParams} from "./3dEngine/Component.js";
-import Quaternion from "./3dEngine/Quaternion.js";
-import Vector3 from "./3dEngine/Vector3.js";
+import Quaternion from "./math/Quaternion.js";
+import Vector3 from "./math/Vector3.js";
 
 export default class RotateAroundComponent extends Component {
-    private speed: number;
+    private readonly speed: number;
     private rotation: Vector3;
 
     constructor(speed: number = 2) {
@@ -22,5 +22,4 @@ export default class RotateAroundComponent extends Component {
         this.rotation = this.rotation.add(new Vector3([0, this.speed * deltaTime, 0]));
         console.log(this.rotation.y * 180 / Math.PI % 360);
     }
-
 }

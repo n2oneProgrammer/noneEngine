@@ -1,5 +1,5 @@
-import Vector3 from "./Vector3";
-import Color from "./Color.js";
+import Vector3 from "../math/Vector3";
+import Color from "../math/Color.js";
 
 export default class Triangle {
     vertices: [Vector3, Vector3, Vector3];

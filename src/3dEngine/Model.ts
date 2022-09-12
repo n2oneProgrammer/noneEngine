@@ -1,7 +1,7 @@
-import Vector3 from "./Vector3.js";
-import Quaternion from "./Quaternion.js";
 import Component from "./Component.js";
 import Scene from "./Scene.js";
+import Vector3 from "../math/Vector3.js";
+import Quaternion from "../math/Quaternion.js";
 
 export interface IModel {
     position?: Vector3;

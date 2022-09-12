@@ -1,9 +1,9 @@
 import Component, {IStartParams, IUpdateParams} from "../Component.js";
-import Vector3 from "../Vector3.js";
-import Color from "../Color.js";
 import CameraComponent from "./CameraComponent.js";
 import Triangle, {RenderedTriangle, TrianglePoints} from "../Triangle.js";
 import Canvas from "../Canvas.js";
+import Color from "../../math/Color.js";
+import Vector3 from "../../math/Vector3.js";
 
 export interface IMeshRenderComponent {
     color: Color;
@@ -27,22 +27,6 @@ export default class MeshRenderComponent extends Component {
     update({}: IUpdateParams): void {
     }
 
-    //TODO REMOVE OR MOVE TO SPHERE
-    // intersectRay(startPoint: Vector3, viewport: Vector3): [number, number] {
-    //     // debugger
-    //     if (this.modelOwner == null) throw new Error("Component don't have owner");
-    //     let CO = startPoint.sub(this.modelOwner.position);
-    //     let a = viewport.dot(viewport);
-    //     let b = 2 * CO.dot(viewport);
-    //     let c = CO.dot(CO) - this.radius * this.radius;
-    //     let discriminant = b * b - 4 * a * c;
-    //     if (discriminant < 0) return [Infinity, Infinity];
-    //     let sqrtDisc = Math.sqrt(discriminant);
-    //     // debugger
-    //     let t1 = (-b + sqrtDisc) / (2 * a);
-    //     let t2 = (-b - sqrtDisc) / (2 * a);
-    //     return [t1, t2];
-    // }
     project(camera: CameraComponent) {
         let copy = this.copy();
         copy._vertexes = copy._vertexes.map(v => camera.applyTransform(this.calcVertexPos(v)));
@@ -57,9 +41,7 @@ export default class MeshRenderComponent extends Component {
             center: this.getMeshCenter(),
             radius: this.getMeshRadius()
         });
-        // let clippedTriangles = triangles;
         if (!clippedTriangles) return [];
-        console.log(triangles.length, clippedTriangles.length);
         canvas.drawTriangles(clippedTriangles.map(t => new RenderedTriangle(
             t.vertices.map(v => camera.projectVertex(v, canvas)) as TrianglePoints,
             this.color,
@@ -111,38 +93,24 @@ export default class MeshRenderComponent extends Component {
         return this._color;
     }
 
-    set color(value
-                  :
-                  Color
-    ) {
+    set color(value: Color) {
         this._color = value;
     }
 
-    get vertexes()
-        :
-        Vector3[] {
+    get vertexes(): Vector3[] {
         return this._vertexes;
     }
 
-    set vertexes(value
-                     :
-                     Vector3[]
-    ) {
+    set vertexes(value: Vector3[]) {
         this._vertexes = value;
     }
 
-    get triangles()
-        :
-        [number, number, number][] {
+    get triangles(): [number, number, number][] {
         return this._triangles;
     }
 
-    set triangles(value
-                      :
-                      [number, number, number][]
-    ) {
+    set triangles(value: [number, number, number][]) {
         this._triangles = value;
     }
-
 
 }

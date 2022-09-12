@@ -6,7 +6,7 @@ export default class Scene {
     private lastFrameTime: number = 0;
     private isStarted: boolean = false;
     private _models: Model[];
-    private _canvas: Canvas;
+    private readonly _canvas: Canvas;
     private _mainCamera: CameraComponent | null;
 
     constructor(canvasDOM: HTMLCanvasElement | null) {
