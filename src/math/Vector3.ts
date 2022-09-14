@@ -109,5 +109,6 @@ export default class Vector3 {
 
     // static
     static zero = new Vector3([0, 0, 0]);
-
+    static forward = new Vector3([0, 0, 1]);
+    static up = new Vector3([0, 1, 0]);
 }

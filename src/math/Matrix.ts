@@ -1,8 +1,16 @@
 export default class Matrix {
-    private values: number[][];
-    private rows: number;
-    private cols: number;
+    private readonly values: number[][];
+    private readonly rows: number;
+    private readonly cols: number;
 
+    /*
+        [[00,01,02,03..],[10,11,12,13..]..]
+            v column
+        00 01 02 03 < row
+        10 11 12 13
+        20 21 22 23
+        30 31 32 33
+     */
     constructor(tab: number[][] | number[]) {
         if (tab.length == 0) {
             this.values = [[0]];
@@ -21,7 +29,7 @@ export default class Matrix {
         }
     }
 
-    get(col: number, row: number) {
+    get(row: number, col: number) {
         if (col < 0 || col > this.cols || row < 0 || row > this.rows) throw new Error(`Out of Matrix[${this.cols},${this.rows}]. You cannot get ${col},${row}`);
         return this.values[row][col];
     }
@@ -138,5 +146,23 @@ export default class Matrix {
             }
         }
         return new Matrix(result);
+    }
+}
+
+export class Matrix2x2 extends Matrix {
+    constructor(values: [[number, number], [number, number]]) {
+        super(values);
+    }
+}
+
+export class Matrix3x3 extends Matrix {
+    constructor(values: [[number, number, number], [number, number, number], [number, number, number]]) {
+        super(values);
+    }
+}
+
+export class Matrix4x4 extends Matrix {
+    constructor(values: [[number, number, number, number], [number, number, number, number], [number, number, number, number], [number, number, number, number]]) {
+        super(values);
     }
 }
