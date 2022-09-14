@@ -61,6 +61,35 @@ export default class Vector3 {
         return this._x * this._x + this._y * this._y + this._z * this._z;
     }
 
+    length(): number {
+        return Math.sqrt(this.lengthSquare());
+    }
+
+    normalize() {
+        let len = this.length();
+        return this.mul(1 / len);
+    }
+
+    angle(v: Vector3): number {
+        let len = Math.sqrt(this.lengthSquare() * v.lengthSquare());
+        return Math.acos(this.dot(v) / len);
+    }
+
+    project(vecLen: Vector3) {
+        let dot = vecLen.dot(this);
+        let lenSq = this.lengthSquare();
+        return this.mul(dot / lenSq);
+    }
+
+    perpendicular(vecLen: Vector3) {
+        return vecLen.sub(this.project(vecLen));
+    }
+
+    reflection(normal: Vector3) {
+        let d = this.dot(normal);
+        return this.sub(normal.mul(d * 2));
+    }
+
     copy() {
         return new Vector3([this._x, this._y, this._z]);
     }

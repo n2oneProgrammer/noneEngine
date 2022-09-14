@@ -3,7 +3,7 @@ import Scene from "../Scene.js";
 import MeshRenderComponent from "./MeshRenderComponent.js";
 import Canvas from "../Canvas.js";
 import ClippingPlane from "../ClippingPlane.js";
-import Triangle, {RenderedTriangle} from "../Triangle.js";
+import Triangle from "../Triangle.js";
 import {deg2rad} from "../../math/Utils.js";
 import Vector3 from "../../math/Vector3.js";
 
@@ -69,11 +69,11 @@ export default class CameraComponent extends Component {
     }
 
     render(scene: Scene) {
-        let triangles: RenderedTriangle[] = [];
+        let triangles: Triangle[] = [];
         scene.models.forEach(model => {
                 let component = model.getComponent<MeshRenderComponent>(m => m instanceof MeshRenderComponent);
                 if (component != undefined) {
-                    triangles = triangles.concat(component.renderTriangles(this, scene.canvas));
+                    triangles.push(...component.renderTriangles(this, scene.canvas));
                 }
             }
         );
@@ -85,7 +85,6 @@ export default class CameraComponent extends Component {
         let resTriangles: Array<Triangle> | null = triangles;
         for (let i = 0; i < this.clippingPlanes.length; i++) {
             const p = this.clippingPlanes[i];
-            console.log(p);
             resTriangles = p.clipObject(resTriangles.map(t => t.copy()), boundingSphere);
             if (resTriangles == null) {
                 break;
@@ -100,12 +99,15 @@ export default class CameraComponent extends Component {
         return this.modelOwner.rotation.negative().mul(step1) as Vector3;
     }
 
-    projectVertex(vertex: Vector3, canvas: Canvas): [number, number] {
-        return this.viewport2Canvas(vertex.x * this._viewportNear / vertex.z, vertex.y * this._viewportNear / vertex.z, canvas);
+    projectVertex(vertex: Vector3, canvas: Canvas): Vector3 {
+        return this.viewport2Canvas(new Vector3([vertex.x * this._viewportNear / vertex.z, vertex.y * this._viewportNear / vertex.z, vertex.z]), canvas);
     }
 
-    private viewport2Canvas(x: number, y: number, canvas: Canvas): [number, number] {
-        return [x * canvas.width / this._viewportWidth, y * canvas.height / this._viewportHeight];
+    private viewport2Canvas(v: Vector3, canvas: Canvas): Vector3 {
+        return new Vector3(
+            [(v.x * canvas.width) / this._viewportWidth + canvas.width / 2,
+                (v.y * canvas.height) / this._viewportHeight + canvas.height / 2,
+                v.z]);
     }
 
     // getters and setters

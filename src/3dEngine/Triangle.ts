@@ -3,9 +3,11 @@ import Color from "../math/Color.js";
 
 export default class Triangle {
     vertices: [Vector3, Vector3, Vector3];
+    color :Color;
 
-    constructor(vertices: [Vector3, Vector3, Vector3]) {
+    constructor(vertices: [Vector3, Vector3, Vector3], color: Color = new Color([0, 0, 0, 1])) {
         this.vertices = vertices;
+        this.color = color;
     }
 
     copy() {

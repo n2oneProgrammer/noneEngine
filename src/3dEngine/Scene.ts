@@ -8,15 +8,18 @@ export default class Scene {
     private _models: Model[];
     private readonly _canvas: Canvas;
     private _mainCamera: CameraComponent | null;
+    private updateFunc: (deltaTime: number) => void;
 
     constructor(canvasDOM: HTMLCanvasElement | null) {
         this._canvas = new Canvas(canvasDOM);
+        this.updateFunc = () => null;
         this._mainCamera = null;
         this._models = [];
     }
 
-    start() {
+    start(updateFunc?: (deltaTime: number) => void) {
         if (this.isStarted) return;
+        this.updateFunc = updateFunc || (() => null);
         this.isStarted = true;
         this.lastFrameTime = Date.now();
         this._models.forEach(model => model.start(this));
@@ -29,9 +32,11 @@ export default class Scene {
         this.lastFrameTime = Date.now();
         this._models.forEach(model => model.update(deltaTime, this));
         if (this.mainCamera != null) {
-            this.canvas.clearCanvas();
+            this.canvas.startDrawing();
             this.mainCamera.render(this);
+            this.canvas.endDrawing();
         }
+        this.updateFunc(deltaTime);
         requestAnimationFrame(this.update.bind(this));
     }
 
