@@ -4,7 +4,14 @@ import CameraComponent from "./3dEngine/Components/CameraComponent.js";
 import CubeMeshRenderComponent from "./3dEngine/Components/MeshRender/CubeMeshRenderComponent.js";
 import Vector3 from "./math/Vector3.js";
 import Color from "./math/Color.js";
+import Matrix from "./math/Matrix.js";
 
+let m1 = new Matrix([0, 1, 2, 3]);
+let m2 = new Matrix([[0], [1], [2], [3]]);
+// let m3 = new Matrix([[0, 1], [1, 1], [2, 1], [3, 1]]);
+
+console.log(m1);
+console.log(m2.mul(m1).mul(m2));
 let canvas = <HTMLCanvasElement>document.getElementById("canvas");
 let scene = new Scene(canvas);
 scene.addModel(new Model({
