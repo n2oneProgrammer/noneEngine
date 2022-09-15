@@ -1,6 +1,7 @@
 import Triangle from "./Triangle.js";
 import Color from "../math/Color.js";
 import {interpolate, map} from "../math/Utils.js";
+import Vector3 from "../math/Vector3.js";
 
 export default class Canvas {
     private readonly _canvasDOM: HTMLCanvasElement;
@@ -38,7 +39,13 @@ export default class Canvas {
     drawTriangles(triangles: Triangle[]) {
         // triangles.sort((t1, t2) => t1.z - t2.z);
         triangles.forEach(t => {
-            let [_p1, _p2, _p3] = t.vertices;
+
+            let [_p1, _p2, _p3] = t.vertices.map(v => {
+                let x = Math.round(v.x);
+                let y = Math.round(v.y);
+                let z = Math.round(v.z);
+                return new Vector3([x, y, z]);
+            });
             // const c = (1 / _p3.z) * 500;
             // let color = new Color([c, c, c, 1]);
             const a = [_p1, _p2, _p3];
@@ -125,7 +132,7 @@ export default class Canvas {
             max = Math.max(this.depthBuffer[i], max);
         }
 
-        const DRAW_DEPTH_BUFFER = true;
+        const DRAW_DEPTH_BUFFER = false;
         if (DRAW_DEPTH_BUFFER)
             for (let x = 0; x < this.width; x++) {
                 for (let y = 0; y < this.height; y++) {

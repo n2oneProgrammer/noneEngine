@@ -6,7 +6,7 @@ export default class Triangle {
     normal: Vector3;
     color: Color;
 
-    constructor(vertices: [Vector3, Vector3, Vector3], normal: Vector3, color: Color = new Color([0, 0, 0, 1])) {
+    constructor(vertices: [Vector3, Vector3, Vector3], normal: Vector3, color: Color) {
         this.vertices = vertices;
         this.normal = normal;
         this.color = color;

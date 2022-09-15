@@ -26,7 +26,7 @@ export default class Vector3 {
     }
 
     sub(v: Vector3) {
-        return this.add(v.negative());
+        return new Vector3([this._x - v._x, this._y - v._y, this._z - v._z]);
     }
 
     mul(v: Vector3 | number): Vector3 {
@@ -40,7 +40,7 @@ export default class Vector3 {
         return new Vector3({
             x: this._y * v.z - this._z * v.y,
             y: this._z * v.x - this._x * v.z,
-            z: this._x * v.y - this._y - v.x
+            z: this._x * v.y - this._y * v.x
         })
     }
 

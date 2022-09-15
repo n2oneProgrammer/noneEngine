@@ -78,6 +78,10 @@ export default class CameraComponent extends Component {
         );
     }
 
+    transformNormalToCamera(vertex: Vector3) {
+        return this.modelOwner?.rotation.negative().mul(vertex) as Vector3;
+    }
+
     //Helpers
     preClipObject(boundingSphere: { center: Vector3, radius: number }) {
         let res = 1;

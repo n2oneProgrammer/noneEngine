@@ -4,17 +4,21 @@ import Triangle from "../Triangle.js";
 import Vector3 from "../../math/Vector3.js";
 import Canvas from "../Canvas.js";
 import Mesh from "../Mesh.js";
+import Color from "../../math/Color.js";
 
 export interface IMeshRenderComponent {
     mesh: Mesh;
+    color: Color
 }
 
 export default class MeshRenderComponent extends Component {
     mesh: Mesh;
+    color: Color;
 
-    constructor({mesh}: IMeshRenderComponent) {
+    constructor({mesh, color}: IMeshRenderComponent) {
         super();
-        this.mesh = mesh
+        this.mesh = mesh;
+        this.color = color;
     }
 
     start({}: IStartParams): void {
@@ -29,13 +33,13 @@ export default class MeshRenderComponent extends Component {
         const res = camera.preClipObject(projectedMesh.boundingSphere);
         if (res == -1) return;
 
-        let triangles = projectedMesh.getTriangles();
+        let triangles = projectedMesh.getTriangles(this.color);
         triangles = triangles.filter(t => t.normal.dot((t.vertices[0].negative())) > 0);
         if (res == 0) triangles = camera.clipObject(triangles);
 
         let projectTriangle = triangles.map(t => new Triangle(
             t.vertices.map(v => camera.projectVertex(v, canvas)) as [Vector3, Vector3, Vector3]
-            , t.normal
+            , t.normal, t.color
         ));
         canvas.drawTriangles(projectTriangle);
     }
