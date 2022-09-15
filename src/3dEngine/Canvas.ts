@@ -111,7 +111,7 @@ export default class Canvas {
 
     drawPixel(x: number, y: number, color: Color) {
         x = Math.round(x);
-        y = Math.round(y);
+        y = this.height - Math.round(y);
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) return;
         this.img.data[y * (this.width * 4) + x * 4] = color.r;
         this.img.data[y * (this.width * 4) + x * 4 + 1] = color.g;

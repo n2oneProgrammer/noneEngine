@@ -36,7 +36,7 @@ export default class MeshRenderComponent extends Component {
         let triangles = projectedMesh.getTriangles(this.color);
         triangles = triangles.filter(t => t.normal.dot((t.vertices[0].negative())) > 0);
         if (res == 0) triangles = camera.clipObject(triangles);
-
+        console.log(triangles.length, triangles);
         let projectTriangle = triangles.map(t => new Triangle(
             t.vertices.map(v => camera.projectVertex(v, canvas)) as [Vector3, Vector3, Vector3]
             , t.normal, t.color

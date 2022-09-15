@@ -12,7 +12,7 @@ const cube = new ObjLoader(await FileLoader.load("/cube.obj")).parse();
 let canvas = <HTMLCanvasElement>document.getElementById("canvas");
 let scene = new Scene(canvas);
 let camera = new Model({
-    position: new Vector3([0, 0, -20]),
+    position: new Vector3([2, 0, -2]),
     rotation: new Vector3([0, 0, 0])
 }).addComponent(new CameraComponent({
     viewportFov: 90,
