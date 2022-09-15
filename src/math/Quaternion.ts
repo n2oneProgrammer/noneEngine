@@ -1,4 +1,5 @@
 import Vector3 from "./Vector3.js";
+import Matrix, {Matrix4x4} from "./Matrix.js";
 
 export interface IQuaternion {
     x: number,
@@ -95,5 +96,42 @@ export default class Quaternion {
         );
     }
 
+    static lookAt(source: Vector3, dest: Vector3) {
+        let forward = dest.sub(source).normalize();
+        let right = Vector3.up.cross(forward).normalize();
+        let newUp = forward.cross(right);
 
+        return Quaternion.getQuaternionFromMatrix(new Matrix4x4([
+            [right.x, newUp.x, forward.x, 0],
+            [right.y, newUp.y, forward.y, 0],
+            [right.z, newUp.z, forward.z, 0],
+            [-right.dot(source), -newUp.dot(source), -forward.dot(source), 1]
+        ]));
+    }
+
+    static getQuaternionFromMatrix(m: Matrix): Quaternion {
+        let w = Math.sqrt(Math.max(0, 1 + m.get(0, 0) + m.get(1, 1) + m.get(2, 2))) / 2;
+        let x = Math.sqrt(Math.max(0, 1 + m.get(0, 0) - m.get(1, 1) - m.get(2, 2))) / 2;
+        let y = Math.sqrt(Math.max(0, 1 - m.get(0, 0) + m.get(1, 1) - m.get(2, 2))) / 2;
+        let z = Math.sqrt(Math.max(0, 1 - m.get(0, 0) - m.get(1, 1) + m.get(2, 2))) / 2;
+        x *= Math.sign(x * (m.get(2, 1) - m.get(1, 2)));
+        y *= Math.sign(y * (m.get(0, 2) - m.get(2, 0)));
+        z *= Math.sign(z * (m.get(1, 0) - m.get(0, 1)));
+        return new Quaternion([x, y, z, w]);
+    }
+
+    static getSqrt(v: number): number {
+        if (v == 0 || v == 1) {
+            return v;
+        }
+        if (v == -1) {
+            return -1;
+        }
+        let precision = 0.000001;
+        let result = v;
+        while ((result - v / result) > precision) {
+            result = (result - v / result) / 2;
+        }
+        return result;
+    }
 }

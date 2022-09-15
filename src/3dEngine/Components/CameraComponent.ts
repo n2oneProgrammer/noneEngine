@@ -69,23 +69,36 @@ export default class CameraComponent extends Component {
     }
 
     render(scene: Scene) {
-        let triangles: Triangle[] = [];
         scene.models.forEach(model => {
                 let component = model.getComponent<MeshRenderComponent>(m => m instanceof MeshRenderComponent);
                 if (component != undefined) {
-                    triangles.push(...component.renderTriangles(this, scene.canvas));
+                    component.renderTriangles(this, scene.canvas);
                 }
             }
         );
-        scene.canvas.drawTriangles(triangles);
     }
 
     //Helpers
-    clipObject(triangles: Array<Triangle>, boundingSphere: { center: Vector3, radius: number }) {
+    preClipObject(boundingSphere: { center: Vector3, radius: number }) {
+        let res = 1;
+        for (let i = 0; i < this.clippingPlanes.length; i++) {
+            const p = this.clippingPlanes[i];
+            const c_res = p.preClipObject(boundingSphere);
+            if (c_res === -1) {
+                return -1;
+            }
+            if (c_res === 0) {
+                res = 0;
+            }
+        }
+        return res;
+    }
+
+    clipObject(triangles: Array<Triangle>) {
         let resTriangles: Array<Triangle> | null = triangles;
         for (let i = 0; i < this.clippingPlanes.length; i++) {
             const p = this.clippingPlanes[i];
-            resTriangles = p.clipObject(resTriangles.map(t => t.copy()), boundingSphere);
+            resTriangles = p.clipTriangles(resTriangles.map(t => t.copy()));
             if (resTriangles == null) {
                 break;
             }

@@ -3,16 +3,18 @@ import Color from "../math/Color.js";
 
 export default class Triangle {
     vertices: [Vector3, Vector3, Vector3];
-    color :Color;
+    normal: Vector3;
+    color: Color;
 
-    constructor(vertices: [Vector3, Vector3, Vector3], color: Color = new Color([0, 0, 0, 1])) {
+    constructor(vertices: [Vector3, Vector3, Vector3], normal: Vector3, color: Color = new Color([0, 0, 0, 1])) {
         this.vertices = vertices;
+        this.normal = normal;
         this.color = color;
     }
 
     copy() {
         return new Triangle(
-            this.vertices.map((v) => v.copy()) as [Vector3, Vector3, Vector3]
+            this.vertices.map((v) => v.copy()) as [Vector3, Vector3, Vector3], this.normal, this.color
         );
     }
 }

@@ -1,6 +1,6 @@
 import Triangle from "./Triangle.js";
 import Color from "../math/Color.js";
-import {interpolate} from "../math/Utils.js";
+import {interpolate, map} from "../math/Utils.js";
 
 export default class Canvas {
     private readonly _canvasDOM: HTMLCanvasElement;
@@ -106,7 +106,6 @@ export default class Canvas {
         x = Math.round(x);
         y = Math.round(y);
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) return;
-
         this.img.data[y * (this.width * 4) + x * 4] = color.r;
         this.img.data[y * (this.width * 4) + x * 4 + 1] = color.g;
         this.img.data[y * (this.width * 4) + x * 4 + 2] = color.b;
@@ -126,20 +125,20 @@ export default class Canvas {
             max = Math.max(this.depthBuffer[i], max);
         }
 
-        // const DRAW_DEPTH_BUFFER = true;
-        // if (DRAW_DEPTH_BUFFER)
-        //     for (let x = 0; x < this.width; x++) {
-        //         for (let y = 0; y < this.height; y++) {
-        //             const c = map(
-        //                 this.depthBuffer[y * this.width + x],
-        //                 0,
-        //                 max,
-        //                 0,
-        //                 255
-        //             );
-        //             this.drawPixel(x, y, new Color([c, c, c, 255]));
-        //         }
-        //     }
+        const DRAW_DEPTH_BUFFER = true;
+        if (DRAW_DEPTH_BUFFER)
+            for (let x = 0; x < this.width; x++) {
+                for (let y = 0; y < this.height; y++) {
+                    const c = map(
+                        this.depthBuffer[y * this.width + x],
+                        0,
+                        max,
+                        0,
+                        255
+                    );
+                    this.drawPixel(x, y, new Color([c, c, c, 255]));
+                }
+            }
 
         this._canvasCtx.putImageData(this.img, 0, 0);
     }

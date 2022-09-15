@@ -24,11 +24,23 @@ export default class ClippingPlane {
             .add(a);
     }
 
+    preClipObject(boundingSphere: { center: Vector3, radius: number }) {
+        const d = this.distance(boundingSphere.center);
+
+        if (boundingSphere.radius < d) {
+            return 1;
+        } else if (-boundingSphere.radius > d) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
     clipObject(triangles: Array<Triangle>, boundingSphere: { center: Vector3, radius: number }) {
         const d = this.distance(boundingSphere.center);
 
         if (boundingSphere.radius < d) {
-            return triangles;
+            return triangles
         } else if (-boundingSphere.radius > d) {
             return null;
         } else {
@@ -96,8 +108,8 @@ export default class ClippingPlane {
                 triangle.vertices[0],
                 triangle.vertices[1],
                 _02,
-            ]);
-            return [new Triangle([triangle.vertices[1], _02, _12]), triangle];
+            ], triangle.normal);
+            return [new Triangle([triangle.vertices[1], _02, _12], triangle.normal), triangle];
         } else if (d0 > 0 && d1 < 0 && d2 > 0) {
             const _01 = this.intersection(
                 triangle.vertices[0],
@@ -111,8 +123,8 @@ export default class ClippingPlane {
                 triangle.vertices[0],
                 triangle.vertices[2],
                 _01,
-            ]);
-            return [new Triangle([triangle.vertices[2], _01, _12]), triangle]
+            ], triangle.normal);
+            return [new Triangle([triangle.vertices[2], _01, _12], triangle.normal), triangle]
         } else if (d0 < 0 && d1 > 0 && d2 > 0) {
             const _01 = this.intersection(
                 triangle.vertices[0],
@@ -126,8 +138,8 @@ export default class ClippingPlane {
                 triangle.vertices[1],
                 triangle.vertices[2],
                 _01,
-            ]);
-            return [triangle, new Triangle([triangle.vertices[2], _01, _02])]
+            ], triangle.normal);
+            return [triangle, new Triangle([triangle.vertices[2], _01, _02], triangle.normal)]
         }
         return []
     }
