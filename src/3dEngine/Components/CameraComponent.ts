@@ -123,7 +123,7 @@ export default class CameraComponent extends Component {
     private viewport2Canvas(v: Vector3, canvas: Canvas): Vector3 {
         return new Vector3(
             [(v.x * canvas.width) / this._viewportWidth + canvas.width / 2,
-                (v.y * canvas.height) / this._viewportHeight + canvas.height / 2,
+                -(v.y * canvas.height) / this._viewportHeight + canvas.height / 2,
                 v.z]);
     }
 

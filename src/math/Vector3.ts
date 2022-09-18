@@ -67,6 +67,7 @@ export default class Vector3 {
 
     normalize() {
         let len = this.length();
+        if (len == 0) return Vector3.zero;
         return this.mul(1 / len);
     }
 

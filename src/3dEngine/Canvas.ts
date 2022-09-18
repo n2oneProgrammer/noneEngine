@@ -43,7 +43,7 @@ export default class Canvas {
             let [_p1, _p2, _p3] = t.vertices.map(v => {
                 let x = Math.round(v.x);
                 let y = Math.round(v.y);
-                let z = Math.round(v.z);
+                let z = v.z;
                 return new Vector3([x, y, z]);
             });
             // const c = (1 / _p3.z) * 500;
@@ -110,8 +110,6 @@ export default class Canvas {
     }
 
     drawPixel(x: number, y: number, color: Color) {
-        x = Math.round(x);
-        y = this.height - Math.round(y);
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) return;
         this.img.data[y * (this.width * 4) + x * 4] = color.r;
         this.img.data[y * (this.width * 4) + x * 4 + 1] = color.g;
@@ -127,13 +125,13 @@ export default class Canvas {
     }
 
     endDrawing() {
-        let max = 0;
-        for (let i = 0; i < this.width * this.height; i++) {
-            max = Math.max(this.depthBuffer[i], max);
-        }
 
         const DRAW_DEPTH_BUFFER = false;
-        if (DRAW_DEPTH_BUFFER)
+        if (DRAW_DEPTH_BUFFER) {
+            let max = 0;
+            for (let i = 0; i < this.width * this.height; i++) {
+                max = Math.max(this.depthBuffer[i], max);
+            }
             for (let x = 0; x < this.width; x++) {
                 for (let y = 0; y < this.height; y++) {
                     const c = map(
@@ -146,6 +144,7 @@ export default class Canvas {
                     this.drawPixel(x, y, new Color([c, c, c, 255]));
                 }
             }
+        }
 
         this._canvasCtx.putImageData(this.img, 0, 0);
     }
