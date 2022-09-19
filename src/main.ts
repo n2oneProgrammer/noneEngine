@@ -47,7 +47,6 @@ console.log(scene);
 let fpsCounter = document.getElementById("fps");
 // camera.rotation = Quaternion.lookAt(camera.position,Vector3.zero);
 scene.start((deltaTime) => {
-    console.log(obj.position);
     if (fpsCounter != null)
         fpsCounter.innerText = (Math.floor(1 / deltaTime * 100) / 100) + " fps";
 });

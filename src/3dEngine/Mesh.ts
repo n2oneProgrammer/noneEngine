@@ -3,6 +3,7 @@ import CameraComponent from "./Components/CameraComponent.js";
 import Model from "./Model.js";
 import Triangle from "../math/Triangle.js";
 import Color from "../math/Color.js";
+import Quaternion from "../math/Quaternion.js";
 
 export interface Sphere {
     center: Vector3;
@@ -67,7 +68,7 @@ export default class Mesh {
 
     calcVertexPos(vertex: Vector3, modelOwner: Model): Vector3 {
         let step1 = vertex.mul(modelOwner.scale || new Vector3([1, 1, 1]));
-        let step2 = modelOwner.rotation.mul(step1.toMatrix()).toVector3();
+        let step2 = Quaternion.getQuaternionFromMatrix(modelOwner.rotation).mul(step1) as Vector3;
         return step2.add(modelOwner.position)
     }
 

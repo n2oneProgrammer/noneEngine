@@ -1,5 +1,5 @@
 import Vector3 from "./Vector3.js";
-import Matrix, {Matrix4x4} from "./Matrix.js";
+import {Matrix3x3} from "./Matrix.js";
 
 export interface IQuaternion {
     x: number,
@@ -101,15 +101,14 @@ export default class Quaternion {
         let right = Vector3.up.cross(forward).normalize();
         let newUp = forward.cross(right);
 
-        return Quaternion.getQuaternionFromMatrix(new Matrix4x4([
-            [right.x, newUp.x, forward.x, 0],
-            [right.y, newUp.y, forward.y, 0],
-            [right.z, newUp.z, forward.z, 0],
-            [-right.dot(source), -newUp.dot(source), -forward.dot(source), 1]
-        ]));
+        return new Matrix3x3([
+            [right.x, newUp.x, forward.x],
+            [right.y, newUp.y, forward.y],
+            [right.z, newUp.z, forward.z]
+        ]);
     }
 
-    static getQuaternionFromMatrix(m: Matrix): Quaternion {
+    static getQuaternionFromMatrix(m: Matrix3x3): Quaternion {
         let w = Math.sqrt(Math.max(0, 1 + m.get(0, 0) + m.get(1, 1) + m.get(2, 2))) / 2;
         let x = Math.sqrt(Math.max(0, 1 + m.get(0, 0) - m.get(1, 1) - m.get(2, 2))) / 2;
         let y = Math.sqrt(Math.max(0, 1 - m.get(0, 0) + m.get(1, 1) - m.get(2, 2))) / 2;
