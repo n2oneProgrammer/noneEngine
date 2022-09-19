@@ -1,6 +1,6 @@
 import Component, {IStartParams, IUpdateParams} from "../Component.js";
 import CameraComponent from "./CameraComponent.js";
-import Triangle from "../Triangle.js";
+import Triangle from "../../math/Triangle.js";
 import Vector3 from "../../math/Vector3.js";
 import Canvas from "../Canvas.js";
 import Mesh from "../Mesh.js";

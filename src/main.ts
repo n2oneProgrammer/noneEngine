@@ -6,6 +6,7 @@ import ObjLoader, {FileLoader} from "./3dEngine/Tools/ObjImporter.js";
 import MeshRenderComponent from "./3dEngine/Components/MeshRenderComponent.js";
 import RotateAroundComponent from "./TestingComponents/RotateAroundComponent.js";
 import Color from "./math/Color.js";
+import RigidbodyComponent from "./Physic/RigidbodyComponent.js";
 
 
 const cube = new ObjLoader(await FileLoader.load("/cube.obj")).parse();
@@ -33,18 +34,20 @@ for (let i = -15; i < 15; i++) {
         })));
     }
 }
-// scene.addModel(new Model({
-//     scale: new Vector3([1, 1, 1]),
-//     position: new Vector3([0, 0, 0]),
-//     rotation: new Vector3([0, 0, 0])
-// }).addComponent(new MeshRenderComponent({
-//     mesh: ico,
-//     color: Color.randomColor()
-// })));
+let obj = new Model({
+    scale: new Vector3([1, 1, 1]),
+    position: new Vector3([0, 10, 0]),
+    rotation: new Vector3([0, 0, 0])
+}).addComponent(new MeshRenderComponent({
+    mesh: cube,
+    color: Color.randomColor()
+})).addComponent(new RigidbodyComponent({mass: 10}));
+scene.addModel(obj);
 console.log(scene);
 let fpsCounter = document.getElementById("fps");
 // camera.rotation = Quaternion.lookAt(camera.position,Vector3.zero);
 scene.start((deltaTime) => {
+    console.log(obj.position);
     if (fpsCounter != null)
         fpsCounter.innerText = (Math.floor(1 / deltaTime * 100) / 100) + " fps";
 });

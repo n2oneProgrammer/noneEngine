@@ -1,3 +1,5 @@
+import Vector3 from "./Vector3.js";
+
 export default class Matrix {
     private readonly values: number[][];
     private readonly rows: number;
@@ -147,11 +149,23 @@ export default class Matrix {
         }
         return new Matrix(result);
     }
+
+    toVector3() {
+        return new Vector3([this.get(0, 0), this.get(1, 0), this.get(2, 0),]);
+    }
 }
 
 export class Matrix2x2 extends Matrix {
     constructor(values: [[number, number], [number, number]]) {
         super(values);
+    }
+
+    static get identity() {
+        return this.makeIdentity(2);
+    }
+
+    static get zero() {
+        return new Matrix2x2([[0, 0], [0, 0]]);
     }
 }
 
@@ -159,10 +173,47 @@ export class Matrix3x3 extends Matrix {
     constructor(values: [[number, number, number], [number, number, number], [number, number, number]]) {
         super(values);
     }
+
+    static get identity() {
+        return this.makeIdentity(3);
+    }
+
+    static get zero() {
+        return new Matrix3x3([[0, 0, 0], [0, 0, 0], [0, 0, 0]]);
+    }
+
+    static setFromEuler(rot: Vector3) {
+        const sin = Math.sin;
+        const cos = Math.cos;
+        let x = new Matrix([
+            [1, 0, 0],
+            [0, cos(rot.x), -sin(rot.x)],
+            [0, sin(rot.x), cos(rot.x)]
+        ]);
+        let y = new Matrix([
+            [cos(rot.y), 0, sin(rot.y)],
+            [0, 1, 0],
+            [sin(rot.y), 0, cos(rot.y)]
+        ]);
+        let z = new Matrix([
+            [cos(rot.z), -sin(rot.z), 0],
+            [sin(rot.z), cos(rot.z), 0],
+            [0, 0, 1]
+        ]);
+        return x.mul(y).mul(z);
+    }
 }
 
 export class Matrix4x4 extends Matrix {
     constructor(values: [[number, number, number, number], [number, number, number, number], [number, number, number, number], [number, number, number, number]]) {
         super(values);
+    }
+
+    static get identity() {
+        return this.makeIdentity(4);
+    }
+
+    static get zero() {
+        return new Matrix4x4([[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]);
     }
 }

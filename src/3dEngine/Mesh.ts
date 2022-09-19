@@ -1,7 +1,7 @@
 import Vector3 from "../math/Vector3.js";
 import CameraComponent from "./Components/CameraComponent.js";
 import Model from "./Model.js";
-import Triangle from "./Triangle.js";
+import Triangle from "../math/Triangle.js";
 import Color from "../math/Color.js";
 
 export interface Sphere {
@@ -59,7 +59,7 @@ export default class Mesh {
         let copy = this.copy();
         copy.vertexes = copy.vertexes.map(v => camera.applyTransform(this.calcVertexPos(v, modelOwner)));
         copy.normals = copy.normals.map((n) =>
-            camera.transformNormalToCamera(modelOwner.rotation.mul(n) as Vector3)
+            camera.transformNormalToCamera(modelOwner.rotation.mul(n.toMatrix()).toVector3())
         );
         copy.calculateBoundingSphere();
         return copy;
@@ -67,7 +67,7 @@ export default class Mesh {
 
     calcVertexPos(vertex: Vector3, modelOwner: Model): Vector3 {
         let step1 = vertex.mul(modelOwner.scale || new Vector3([1, 1, 1]));
-        let step2 = modelOwner.rotation.mul(step1) as Vector3;
+        let step2 = modelOwner.rotation.mul(step1.toMatrix()).toVector3();
         return step2.add(modelOwner.position)
     }
 

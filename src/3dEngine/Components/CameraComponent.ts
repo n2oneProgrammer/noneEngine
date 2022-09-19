@@ -3,7 +3,7 @@ import Scene from "../Scene.js";
 import MeshRenderComponent from "./MeshRenderComponent.js";
 import Canvas from "../Canvas.js";
 import ClippingPlane from "../ClippingPlane.js";
-import Triangle from "../Triangle.js";
+import Triangle from "../../math/Triangle.js";
 import {deg2rad} from "../../math/Utils.js";
 import Vector3 from "../../math/Vector3.js";
 
@@ -78,8 +78,8 @@ export default class CameraComponent extends Component {
         );
     }
 
-    transformNormalToCamera(vertex: Vector3) {
-        return this.modelOwner?.rotation.negative().mul(vertex) as Vector3;
+    transformNormalToCamera(vertex: Vector3): Vector3 {
+        return this.modelOwner!.rotation.mul(-1).mul(vertex.toMatrix()).toVector3();
     }
 
     //Helpers
@@ -113,7 +113,7 @@ export default class CameraComponent extends Component {
     applyTransform(vertex: Vector3): Vector3 {
         if (this.modelOwner == null) throw new Error("Component don't have owner");
         let step1 = vertex.sub(this.modelOwner.position);
-        return this.modelOwner.rotation.negative().mul(step1) as Vector3;
+        return this.modelOwner.rotation.mul(-1).mul(step1.toMatrix()).toVector3();
     }
 
     projectVertex(vertex: Vector3, canvas: Canvas): Vector3 {

@@ -30,6 +30,7 @@ export default class Scene {
     update() {
         let deltaTime = (performance.now() - this.lastFrameTime) / 1000;
         this.lastFrameTime = performance.now();
+        if (deltaTime < 0) deltaTime = 0;
         this._models.forEach(model => model.update(deltaTime, this));
         if (this.mainCamera != null) {
             this.canvas.startDrawing();

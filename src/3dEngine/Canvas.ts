@@ -1,4 +1,4 @@
-import Triangle from "./Triangle.js";
+import Triangle from "../math/Triangle.js";
 import Color from "../math/Color.js";
 import {interpolate, map} from "../math/Utils.js";
 import Vector3 from "../math/Vector3.js";

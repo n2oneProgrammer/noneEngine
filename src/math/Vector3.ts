@@ -1,3 +1,5 @@
+import Matrix from "./Matrix.js";
+
 interface IVector3 {
     x: number;
     y: number;
@@ -91,6 +93,10 @@ export default class Vector3 {
         return this.sub(normal.mul(d * 2));
     }
 
+    toMatrix(): Matrix {
+        return new Matrix([[this.x], [this.y], [this.z]])
+    };
+
     copy() {
         return new Vector3([this._x, this._y, this._z]);
     }
@@ -110,6 +116,7 @@ export default class Vector3 {
 
     // static
     static zero = new Vector3([0, 0, 0]);
+    static one = new Vector3([1, 1, 1]);
     static forward = new Vector3([0, 0, 1]);
     static up = new Vector3([0, 1, 0]);
 }
