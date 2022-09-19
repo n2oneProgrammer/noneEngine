@@ -1,6 +1,10 @@
 import Vector3 from "../math/Vector3.js";
 import ColliderComponent from "./ColliderComponent.js";
 import {IStartParams, IUpdateParams} from "../3dEngine/Component.js";
+import AABBCollider from "./AABBCollider.js";
+import PointCollider from "./PointCollider.js";
+import OBBCollider from "./OBBCollider.js";
+import PlaneCollider from "./PlaneCollider.js";
 
 export interface ISphere {
     position: Vector3;
@@ -27,6 +31,34 @@ export default class SphereCollider extends ColliderComponent {
 
     update({}: IUpdateParams): void {
     }
+
+    isCollideWithSphere(sphere: SphereCollider): boolean {
+        let sumRadius = this.radius + sphere.radius;
+        let distanceSq = this.position.sub(sphere.position).lengthSquare();
+        return distanceSq < sumRadius * sumRadius;
+    }
+
+    isCollideWithAABB(aabb: AABBCollider): boolean {
+        let closestPoint = new PointCollider(this.position).closestPointInAABB(aabb);
+        let distSq = this.position.sub(closestPoint).lengthSquare();
+        let radiusSq = this.radius * this.radius;
+        return distSq < radiusSq;
+    }
+
+    isCollideWithOBB(obb: OBBCollider): boolean {
+        let closestPoint = new PointCollider(this.position).closestPointInOBB(obb);
+        let distSq = this.position.sub(closestPoint).lengthSquare();
+        let radiusSq = this.radius * this.radius;
+        return distSq < radiusSq;
+    }
+
+    isCollideWithPlane(plane: PlaneCollider): boolean {
+        let closestPoint = new PointCollider(this.position).closestPointOnPlane(plane);
+        let distSq = this.position.sub(closestPoint).lengthSquare();
+        let radiusSq = this.radius * this.radius;
+        return distSq < radiusSq;
+    }
+
 
     //getters and setters
 

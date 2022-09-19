@@ -31,6 +31,12 @@ export default class PlaneCollider extends ColliderComponent {
     planeEquation(pt: Vector3): number {
         return pt.dot(this._normal) - this._distance;
     }
+
+    isCollideWithPlane(plane: PlaneCollider) {
+        let d = this.normal.cross(plane.normal);
+        return d.dot(d) != 0;
+    }
+
     //getters and setters
 
     get normal(): Vector3 {

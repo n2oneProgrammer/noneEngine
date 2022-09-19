@@ -9,14 +9,10 @@ import PlaneCollider from "./PlaneCollider.js";
 import LineCollider from "./LineCollider.js";
 import RayCollider from "./RayCollider.js";
 
-export interface IPointCollider {
-    position: Vector3;
-}
-
 export default class PointCollider extends ColliderComponent {
     private _position: Vector3;
 
-    constructor({position}: IPointCollider) {
+    constructor(position: Vector3) {
         super();
         this._position = position;
     }
