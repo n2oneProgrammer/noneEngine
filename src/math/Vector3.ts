@@ -101,6 +101,17 @@ export default class Vector3 {
         return new Vector3([this._x, this._y, this._z]);
     }
 
+    getByName(name: 'x' | 'y' | 'z'): number {
+        switch (name) {
+            case 'x':
+                return this.x;
+            case 'y':
+                return this.y;
+            case 'z':
+                return this.z;
+        }
+    }
+
     // getters and setters
     get z(): number {
         return this._z;
