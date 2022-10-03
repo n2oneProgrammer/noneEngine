@@ -5,6 +5,7 @@ import {IStartParams, IUpdateParams} from "../3dEngine/Component.js";
 export interface ILine {
     start: Vector3;
     end: Vector3;
+    register?: boolean;
 }
 
 export default class LineCollider extends ColliderComponent {
@@ -12,7 +13,7 @@ export default class LineCollider extends ColliderComponent {
     private _endPoint: Vector3;
 
     constructor(params: ILine | undefined) {
-        super();
+        super({register: params === undefined ? true : params.register});
         if (params === undefined) {
             this._startPoint = Vector3.zero;
             this._endPoint = Vector3.zero;
@@ -29,7 +30,7 @@ export default class LineCollider extends ColliderComponent {
     update({}: IUpdateParams): void {
     }
 
-    length(): number {
+    public length(): number {
         return this._endPoint.sub(this._startPoint).length()
     }
 
@@ -40,10 +41,14 @@ export default class LineCollider extends ColliderComponent {
     //getters and setters
 
     get startPoint(): Vector3 {
-        return this._startPoint;
+        if (this.modelOwner == null)
+            return this._startPoint;
+        return this.modelOwner.position.add(this._startPoint);
     }
 
     get endPoint(): Vector3 {
-        return this._endPoint;
+        if (this.modelOwner == null)
+            return this._endPoint;
+        return this.modelOwner.position.add(this._endPoint);
     }
 }

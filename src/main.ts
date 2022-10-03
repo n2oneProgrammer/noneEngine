@@ -7,6 +7,7 @@ import MeshRenderComponent from "./3dEngine/Components/MeshRenderComponent.js";
 import RotateAroundComponent from "./TestingComponents/RotateAroundComponent.js";
 import Color from "./math/Color.js";
 import RigidbodyComponent from "./Physic/RigidbodyComponent.js";
+import SphereCollider from "./Colliders/SphereCollider.js";
 
 
 const cube = new ObjLoader(await FileLoader.load("/cube.obj")).parse();
@@ -41,7 +42,11 @@ let obj = new Model({
 }).addComponent(new MeshRenderComponent({
     mesh: cube,
     color: Color.randomColor()
-})).addComponent(new RigidbodyComponent({mass: 10}));
+})).addComponent(new RigidbodyComponent({mass: 10}))
+    .addComponent(new SphereCollider({
+        position: Vector3.zero,
+        radius: 1
+    }));
 scene.addModel(obj);
 console.log(scene);
 let fpsCounter = document.getElementById("fps");

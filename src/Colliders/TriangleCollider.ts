@@ -8,8 +8,8 @@ export default class Triangle extends ColliderComponent {
     normal: Vector3;
     color: Color;
 
-    constructor(vertices: [Vector3, Vector3, Vector3], normal: Vector3, color: Color) {
-        super();
+    constructor(vertices: [Vector3, Vector3, Vector3], normal: Vector3, color: Color, register: boolean = true) {
+        super({register: register});
         this.vertices = vertices;
         this.normal = normal;
         this.color = color;
@@ -21,7 +21,7 @@ export default class Triangle extends ColliderComponent {
     update({}: IUpdateParams): void {
     }
 
-    copy() {
+    public copy() {
         return new Triangle(
             this.vertices.map((v) => v.copy()) as [Vector3, Vector3, Vector3], this.normal, this.color
         );

@@ -8,19 +8,20 @@ import PlaneCollider from "./PlaneCollider.js";
 export interface IAABB {
     origin: Vector3;
     size: Vector3;
+    register?: boolean;
 }
 
 export default class AABBCollider extends ColliderComponent {
-    private _origin: Vector3;
+    private _position: Vector3;
     private _halfSize: Vector3;
 
     constructor(params: IAABB | undefined) {
-        super();
+        super({register: params === undefined ? true : params.register});
         if (params == undefined) {
-            this._origin = Vector3.zero;
+            this._position = Vector3.zero;
             this._halfSize = Vector3.one.mul(1 / 2);
         } else {
-            this._origin = params.origin;
+            this._position = params.origin;
             this._halfSize = params.size.mul(1 / 2);
         }
     }
@@ -31,7 +32,7 @@ export default class AABBCollider extends ColliderComponent {
     update({}: IUpdateParams): void {
     }
 
-    isCollideWithAABB(aabb: AABBCollider): boolean {
+    public isCollideWithAABB(aabb: AABBCollider): boolean {
         let aMin = this.getMin();
         let aMax = this.getMax();
         let bMin = aabb.getMin();
@@ -42,7 +43,7 @@ export default class AABBCollider extends ColliderComponent {
             (aMin.z <= bMax.z && aMax.z >= bMin.z);
     }
 
-    isCollideWithOBB(obb: OBBCollider): boolean {
+    public isCollideWithOBB(obb: OBBCollider): boolean {
         let o = obb.orientation;
         let tests = [
             new Vector3([1, 0, 0]),
@@ -69,20 +70,20 @@ export default class AABBCollider extends ColliderComponent {
         let pLen = this.halfSize.x * Math.abs(plane.normal.x) +
             this.halfSize.y * Math.abs(plane.normal.y) +
             this.halfSize.z * Math.abs(plane.normal.z);
-        let dot = plane.normal.dot(this.origin);
+        let dot = plane.normal.dot(this.position);
         let dist = dot - plane.distance;
         return Math.abs(dist) <= pLen;
     }
 
     getMin(): Vector3 {
-        let p1 = this.origin.add(this.halfSize);
-        let p2 = this.origin.sub(this.halfSize);
+        let p1 = this.position.add(this.halfSize);
+        let p2 = this.position.sub(this.halfSize);
         return new Vector3([Math.min(p1.x, p2.x), Math.min(p1.y, p2.y), Math.min(p1.z, p2.z)]);
     }
 
     getMax(): Vector3 {
-        let p1 = this.origin.add(this.halfSize);
-        let p2 = this.origin.sub(this.halfSize);
+        let p1 = this.position.add(this.halfSize);
+        let p2 = this.position.sub(this.halfSize);
         return new Vector3([Math.max(p1.x, p2.x), Math.max(p1.y, p2.y), Math.max(p1.z, p2.z)]);
     }
 
@@ -95,11 +96,19 @@ export default class AABBCollider extends ColliderComponent {
 
     //getters and setters
 
-    get origin(): Vector3 {
-        return this._origin;
+    get position(): Vector3 {
+        if (this.modelOwner == null)
+            return this._position;
+        return this.modelOwner.position.add(this._position);
     }
 
     get halfSize(): Vector3 {
-        return this._halfSize;
+        if (this.modelOwner == null)
+            return this._halfSize;
+        return new Vector3([
+            this.modelOwner.scale.x * this._halfSize.x,
+            this.modelOwner.scale.y * this._halfSize.y,
+            this.modelOwner.scale.z * this._halfSize.z
+        ])
     }
 }

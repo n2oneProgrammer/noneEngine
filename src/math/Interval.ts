@@ -40,7 +40,7 @@ export default class Interval {
     }
 
     static getIntervalOBB(obb: OBBCollider, axis: Vector3): Interval {
-        let C = obb.origin;
+        let C = obb.position;
         let E = obb.halfSize;
         let o = obb.orientation;
         let A = [
